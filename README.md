@@ -1,7 +1,5 @@
 # Multi‑Tenant Rate Limiting Proxy Gateway
 
-# Multi‑Tenant Rate Limiting Proxy Gateway
-
 ## Project structure
 ```
 .
