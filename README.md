@@ -128,3 +128,23 @@ Typical fleet behavior:
 This repo's `.github/copilot` files show how agents → skills → hooks are wired so Copilot Chat can run focused, policy‑aware subagents against the codebase.
 
 ---
+
+To validate the agents' work end-to-end, add this advanced `/status` test to the end of `test_proxy.py` (it checks uptime, timestamp fields, and `Cache-Control`):
+
+```python
+@pytest.mark.asyncio
+async def test_status_route_advanced():
+  """Kiểm tra lối đi /status mới: check Uptime, Timestamp và Cache-Control"""
+  async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
+    response = await ac.get("/status")
+    assert response.status_code == 200
+        
+    data = response.json()
+    assert data["status"] == "ok"
+    assert data["service"] == "multi-tenant-proxy"
+    assert "uptime_seconds" in data
+    assert "timestamp" in data
+        
+    # Kiểm tra luật nội quy nghiêm ngặt về Cache
+    assert "no-store" in response.headers["Cache-Control"]
+```

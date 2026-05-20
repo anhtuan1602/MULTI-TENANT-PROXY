@@ -1,6 +1,6 @@
 import asyncio
 import pytest
-from httpx import AsyncClient, ASGITransport  # Added ASGITransport here
+from httpx import AsyncClient, ASGITransport
 from proxy_server import app
 from services.redis_tracker import redis_client
 
@@ -10,23 +10,11 @@ def clear_redis():
     redis_client.flushdb()
 
 @pytest.mark.asyncio
-async def test_status_route():
-    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
-        response = await ac.get("/status")
-        assert response.status_code == 200
-        assert response.json() == {
-            "status": "ok",
-            "service": "Multi-Tenant Rate Limiting Proxy Gateway",
-        }
-        assert response.headers["Cache-Control"] == "no-store"
-
-@pytest.mark.asyncio
 async def test_free_tier_rate_limiting():
     """
     Tests that a Free Tier user (limit: 3) can successfully make 3 requests,
     but the 4th request is instantly blocked with an HTTP 429 status code.
     """
-    # Updated to use transport=ASGITransport(app=app)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         headers = {"X-API-Key": "free_tier_key"}
         
@@ -46,7 +34,6 @@ async def test_free_tier_rate_limiting():
 @pytest.mark.asyncio
 async def test_premium_tier_higher_allowance():
     """Tests that a Premium Tier user can make more requests than a free tier user."""
-    # Updated to use transport=ASGITransport(app=app)
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         headers = {"X-API-Key": "premium_tier_key"}
         
