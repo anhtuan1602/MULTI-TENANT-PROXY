@@ -1,0 +1,11 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "./scripts/guard-network.sh",
+        "timeoutSec": 5
+      }
+    ]
+  }
+}
