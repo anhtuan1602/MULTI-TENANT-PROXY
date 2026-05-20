@@ -79,19 +79,6 @@ These files are illustrative: they show how to connect agents → skills → hoo
 - Ensure the virtualenv is active and dependencies installed.
 - If tests fail after switching to real Redis, check connectivity and credentials.
 
-## Testing the system
-Run the full test suite:
-
-```bash
-pytest -q
-```
-
-You can run a single test file:
-
-```bash
-pytest test_proxy.py -q
-```
-
 Notes:
 - Tests use `httpx` + `ASGITransport` and `fakeredis` so they run in‑process without external services.
 - A fixture clears the fake Redis database before each test.
@@ -103,7 +90,7 @@ If you type the example Copilot CLI command:
 /fleet Ask the Network Planner to sketch out a status monitoring route, have the Router Engineer append it to `proxy_server.py`, and use the Traffic Auditor to confirm it returns correct HTTP spec headers.
 ```
 
-Typical fleet behavior (concise):
+Typical fleet behavior:
 1. The Copilot CLI forwards the request to the fleet orchestrator.
 2. **Network Planner** (planner subagent) reads the repo and proposes a new route design (signature, path, payload).
 3. **Router Engineer** (engineer subagent) applies the change — edits `proxy_server.py` to add the new async endpoint with proper type hints and headers.
