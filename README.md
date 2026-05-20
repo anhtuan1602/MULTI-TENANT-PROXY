@@ -1,5 +1,32 @@
 # Multi‑Tenant Rate Limiting Proxy Gateway
 
+# Multi‑Tenant Rate Limiting Proxy Gateway
+
+## Project structure
+```
+.
+├── proxy_server.py                 # FastAPI app and endpoints
+├── config.py                       # Tenant API keys and limits
+├── services/
+│   └── redis_tracker.py            # Sliding-window limiter (fakeredis)
+├── test_proxy.py                   # Async tests using httpx + ASGITransport
+├── requirements.txt                # Dependencies
+├── .github/
+│   ├── copilot/
+│   │   ├── agents/
+│   │   │   ├── auditor.yaml        # Traffic Auditor subagent
+│   │   │   ├── engineer.yaml       # Router Engineer subagent
+│   │   │   └── planner.yaml        # Network Planner subagent
+│   │   └── hooks/
+│   │       └── security.json       # PreToolUse hook config
+│   └── skills/
+│       └── rate-limiter/
+│           └── SKILL.md            # HTTP standards guidance for agents
+├── scripts/
+│   └── guard-network.sh            # PreToolUse hook guard script
+└── README.md
+```
+
 ## Overview
 A minimal FastAPI example demonstrating per‑tenant sliding‑window rate limiting and a small GitHub Copilot Chat "fleet" (agents, subagents, skills, hooks). Designed to run locally without a real Redis by using `fakeredis` so it's easy to try.
 
